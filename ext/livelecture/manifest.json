@@ -1,8 +1,8 @@
 {
 	"name" : "Broadcast Your Presentation!",
-	"version" : "1.3",
+	"version" : "0.0.1",
 	"manifest_version" : 2,
-	"description" : "WebRTC Tab Sharing using experimental tabCapture APIs — https://webrtc-experiment.appspot.com/ — Muaz Khan",
+	"description" : "Broadcast Your Presentation!",
 	"background": {
 		"scripts": ["socket.io.js", "RTCPeerConnection-v1.5.js", "broadcast.js", "broadcaster.js", "background.js"],
 		"persistent": false
