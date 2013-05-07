@@ -180,8 +180,10 @@
     var configuration = {
         openSocket: function(config) {
             var socket = io.connect('https://pubsub.pubnub.com/webrtc-rtcweb', {
-                publish_key: 'pub-f986077a-73bd-4c28-8e50-2e44076a84e0',
-                subscribe_key: 'sub-b8f4c07a-352e-11e2-bb9d-c7df1d04ae4a',
+                //publish_key: 'pub-f986077a-73bd-4c28-8e50-2e44076a84e0',
+                //subscribe_key: 'sub-b8f4c07a-352e-11e2-bb9d-c7df1d04ae4a',
+                publish_key: 'pub-c-d14c5c48-6956-4686-9a01-ebf7f8cdc4b3',
+                subscribe_key: 'sub-c-6907dee4-b6b8-11e2-8e98-02ee2ddab7fe',
                 channel: config.channel || 'webrtc-tab-sharing-kevin',
                 ssl: true
             });
