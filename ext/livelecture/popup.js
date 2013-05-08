@@ -1,4 +1,4 @@
-window.baseUrl = 'http://sysfuzz2.cs.berkeley.edu/debug/WebRTC-Experiment/livelecture-viewer/';
+window.baseUrl = 'http://www.cs.berkeley.edu/~kevinchn/sharemt/';
 
 window.onload=function(){
   updateButton();
