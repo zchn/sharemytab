@@ -31,16 +31,16 @@ function initStream(){
     navigator.webkitGetUserMedia(
         {
             audio: true,
-            //audio:false, 
             video:false
         }, 
         function (stream) {
-            var video = $('#microphone-audio')[0];
-            video.src = window.webkitURL.createObjectURL(stream);
+            stream = new webkitMediaStream(stream.getAudioTracks());
+            //var audio = $('#microphone-audio')[0];
+            //audio.src = window.webkitURL.createObjectURL(stream);
             shareMyTalk._audioStream = stream;
-            //shareMyTalk._audioRecorder = RecordRTC({
-            //    stream: stream
-            //});
+            shareMyTalk._audioRecorder = RecordRTC({
+                stream: stream
+            });
         },
         function (err){
             console.log('ERROR:');
@@ -61,7 +61,6 @@ function initStream(){
             shareMyTalk._cameraRecorder = RecordRTC({
                 video: video
             });
-            $('camera-video').css('width','100%');
         },
         function (err){
             console.log('ERROR:');
@@ -85,7 +84,6 @@ function initStream(){
           shareMyTalk._screenRecorder = RecordRTC({
               video: video
           });
-          $('#screen-video').css('width','100%');
       },
       function (err){
           console.log('ERROR:');
@@ -101,6 +99,7 @@ function initButtons(){
 
             shareMyTalk._cameraRecorder.recordVideo();
             shareMyTalk._screenRecorder.recordVideo();
+            shareMyTalk._audioRecorder.recordAudio();
 
             $('#stoprec-btn').show();
         }
@@ -117,6 +116,12 @@ function initButtons(){
             );
 
             shareMyTalk._screenRecorder.stopVideo(
+                function(recordedFileUrl){
+                    window.open(recordedFileUrl);
+                }
+            );
+
+            shareMyTalk._audioRecorder.stopAudio(
                 function(recordedFileUrl){
                     window.open(recordedFileUrl);
                 }

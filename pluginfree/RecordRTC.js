@@ -76,7 +76,7 @@ function RecordRTC(config) {
         audioContext = new AudioContext;
 
         mediaStreamSource = audioContext.createMediaStreamSource(config.stream);
-        mediaStreamSource.connect(audioContext.destination);
+        //(kevin): comment it to eliminate echo mediaStreamSource.connect(audioContext.destination); 
         recorder = new window.Recorder(mediaStreamSource);
 
         recorder.record();
