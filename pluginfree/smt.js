@@ -26,7 +26,7 @@ function main(){
             video:false
         }, 
         function (stream) {
-            var video = document.getElementById("microphone-audio");
+            var video = $("#microphone-audio")[0];
             video.src = window.webkitURL.createObjectURL(stream);
             shareMyTalk._audioStream = stream;
         },
@@ -43,7 +43,7 @@ function main(){
             video:true
         }, 
         function (stream) {
-            var video = document.getElementById("camera-video");
+            var video = $("#camera-video")[0];
             video.src = window.webkitURL.createObjectURL(stream);
             shareMyTalk._cameraStream = stream;
         },
@@ -63,7 +63,7 @@ function main(){
           }
       },
       function (stream) {
-          var video = document.getElementById("screen-video");
+          var video = $("#screen-video")[0];
           video.src = window.webkitURL.createObjectURL(stream);
           shareMyTalk._screenStream = stream;
       },
