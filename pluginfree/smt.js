@@ -1,6 +1,7 @@
 
 window.shareMyTalk = {
     _audioStream: null,
+    _audioRecorder: null,
     getAudioStream: function(){
         return _audioStream;
     },
@@ -8,10 +9,12 @@ window.shareMyTalk = {
         _audioStream = s;
     },
     _cameraStream: null,
+    _cameraRecorder: null,
     getCameraStream: function(){
         return _cameraStream;
     },
     _screenStream: null,
+    _screenRecorder: null,
     getScreenStream: function(){
         return _screenStream;
     }
@@ -19,6 +22,12 @@ window.shareMyTalk = {
     
 
 function main(){
+    initStream();
+    initButtons();
+}
+
+
+function initStream(){
     navigator.webkitGetUserMedia(
         {
             audio: true,
@@ -26,12 +35,15 @@ function main(){
             video:false
         }, 
         function (stream) {
-            var video = $("#microphone-audio")[0];
+            var video = $('#microphone-audio')[0];
             video.src = window.webkitURL.createObjectURL(stream);
             shareMyTalk._audioStream = stream;
+            //shareMyTalk._audioRecorder = RecordRTC({
+            //    stream: stream
+            //});
         },
         function (err){
-            console.log("ERROR:");
+            console.log('ERROR:');
             console.log(err);
         }
     );
@@ -43,12 +55,16 @@ function main(){
             video:true
         }, 
         function (stream) {
-            var video = $("#camera-video")[0];
+            var video = $('#camera-video')[0];
             video.src = window.webkitURL.createObjectURL(stream);
             shareMyTalk._cameraStream = stream;
+            shareMyTalk._cameraRecorder = RecordRTC({
+                video: video
+            });
+            $('camera-video').css('width','100%');
         },
         function (err){
-            console.log("ERROR:");
+            console.log('ERROR:');
             console.log(err);
         }
     );
@@ -63,15 +79,54 @@ function main(){
           }
       },
       function (stream) {
-          var video = $("#screen-video")[0];
+          var video = $('#screen-video')[0];
           video.src = window.webkitURL.createObjectURL(stream);
           shareMyTalk._screenStream = stream;
+          shareMyTalk._screenRecorder = RecordRTC({
+              video: video
+          });
+          $('#screen-video').css('width','100%');
       },
       function (err){
-          console.log("ERROR:");
+          console.log('ERROR:');
           console.log(err);
       }
   );
 }
+
+function initButtons(){
+    $('#record-btn').click(
+        function (){
+            $('#record-btn').hide();
+
+            shareMyTalk._cameraRecorder.recordVideo();
+            shareMyTalk._screenRecorder.recordVideo();
+
+            $('#stoprec-btn').show();
+        }
+    );
+
+    $('#stoprec-btn').click(
+        function (){
+            $('#stoprec-btn').hide();
+
+            shareMyTalk._cameraRecorder.stopVideo(
+                function(recordedFileUrl){
+                    window.open(recordedFileUrl);
+                }
+            );
+
+            shareMyTalk._screenRecorder.stopVideo(
+                function(recordedFileUrl){
+                    window.open(recordedFileUrl);
+                }
+            );
+
+            $('#record-btn').show();
+        }
+    );
+
+}
+
 
 $(document).ready(main);
