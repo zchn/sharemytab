@@ -39,6 +39,7 @@ window.shareMyTalk = {
     },
     _screenConn: null,
     _cameraConn: null,
+    _audioConn: null,
 
     _endofprops: null
 
@@ -163,6 +164,26 @@ function initConnection(){
         updateButtons();
     };
 
+    shareMyTalk._audioConn = new RTCMultiConnection();
+    connection = shareMyTalk._audioConn;
+    connection.direction = 'one-way';
+    connection.session = 'audio';
+    connection.onstream = function (stream) {
+        // if (stream.type === 'remote') {
+        //     if (stream.direction !== Direction.OneWay) {
+        //         throw "shouldn't be here";
+        //     }
+        // }
+        
+        audiostream = new webkitMediaStream(stream.stream.getAudioTracks());
+        shareMyTalk._audioStream = audiostream;
+        shareMyTalk._audioRecorder= RecordRTC({
+            stream: audiostream
+        });
+        updateButtons();
+    };
+
+
     shareMyTalk._sessionId = window.params.join || window.params.create;
 }
 
@@ -210,14 +231,17 @@ function initButtons(){
 function createOrJoinSession(){
     var connection = shareMyTalk._screenConn;
     var camConn = shareMyTalk._cameraConn;
+    var audioConn = shareMyTalk._audioConn;
     if(window.params.join){
         connection.connect(shareMyTalk._sessionId);
         camConn.connect(shareMyTalk._sessionId+1);
+        audioConn.connect(shareMyTalk._sessionId+2);
         var sessionId = window.params.join;
         $('#broadcast-url-div').html('<h2>Keep sharing with friends: <a href="?join=' + sessionId + '" target="_blank">?join=' + sessionId + '</a></h2>');
     }else{
         connection.open(shareMyTalk._sessionId);
         camConn.open(shareMyTalk._sessionId+1);
+        audioConn.open(shareMyTalk._sessionId+2);
         var sessionId = window.params.create;
         $('#broadcast-url-div').html('<h2>Share with friends: <a href="?join=' + sessionId + '" target="_blank">?join=' + sessionId + '</a></h2>');
     }
@@ -225,7 +249,8 @@ function createOrJoinSession(){
 
 function updateButtons(){
     if(shareMyTalk._screenStream != null
-       && shareMyTalk._cameraStream != null){
+       && shareMyTalk._cameraStream != null
+       && shareMyTalk._audioStream != null){
         $('#record-btn').show();
     }
 }

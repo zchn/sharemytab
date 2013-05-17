@@ -251,13 +251,17 @@
                     video: video_constraints
                 };
             }
-            var mediaElement = document.createElement(session.isAudio() ? 'audio' : 'video');
+            var mediaElement = null;
+            if(session === Session.Audio || session === Session.AudioData){
+            }else{
+                mediaElement = document.createElement(session.isAudio() ? 'audio' : 'video');
+            }
+
             var mediaConfig = {
                 video: mediaElement,
                 onsuccess: function (stream) {
                     self.config.attachStream = stream;
                     callback && callback();
-
                     self.onstream({
                         stream: stream,
                         mediaElement: mediaElement,
