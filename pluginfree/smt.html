@@ -7,17 +7,25 @@
     <meta charset="utf-8">
     <link rel="author" type="text/html" href="http://www.cs.berkeley.edu/~kevinchn/">
     <meta name="author" content="Kevin Chen">
+    <script src="./jq-2.js" ></script>
+    <script src="./RecordRTC.js"></script>
     <script src="./smt.js"></script>
 </head>
 
 <body>
-  <div id="screen-video-div">
-    <video id="screen-video" autoplay loop controls muted></video>
+  <div id="control-panel-div">
+    <button id="broadcast-btn">Broadcast</button>
+    <div id="broadcast-url-div"></div>
+    <button id="record-btn">Record</button>
+    <div id="record-status-div"></div>
+  </div>
+  <div id="screen-video-div" style="width:50%;float:left;">
+    <video width="100%" id="screen-video" autoplay loop controls muted></video>
   </div>  
-  <div id="camera-video-div">
-    <video id="camera-video" autoplay loop controls muted></video>    
+  <div id="camera-video-div" style="width:50%;float:right;">
+    <video width="100%" id="camera-video" autoplay loop controls muted></video>    
   </div> 
-  <div id="microphone-audio-div">
+  <div id="microphone-audio-div" style="display:none;">
     <audio id="microphone-audio" autoplay loop controls muted></audio>
   </div>
 </body>
